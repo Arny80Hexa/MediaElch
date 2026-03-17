@@ -109,6 +109,16 @@ ShowScrapeJob::Config CustomShowScrapeJob::configFor(const QString& scraperId, c
 
     auto detailsForScraper = mediaelch::listToSet(m_customConfig.scraperForShowDetails.keys(scraperId));
     detailsForScraper.intersect(scraperConfig.details);
+
+    // Always collect ratings from every sub-scraper that supports them.
+    // The merge logic in ShowMerger uses the rating source as key, so
+    // ratings from different scrapers coexist without overwriting each other.
+    TvScraper* scraper = m_customConfig.scraperForId(scraperId);
+    if (scraper != nullptr && !detailsForScraper.contains(ShowScraperInfo::Rating)
+        && scraper->meta().supportedShowDetails.contains(ShowScraperInfo::Rating)) {
+        detailsForScraper.insert(ShowScraperInfo::Rating);
+    }
+
     scraperConfig.details = detailsForScraper;
 
     return scraperConfig;
