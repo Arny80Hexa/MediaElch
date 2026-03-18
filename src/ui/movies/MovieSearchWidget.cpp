@@ -7,6 +7,7 @@
 #include "scrapers/movie/custom/CustomMovieScraper.h"
 #include "scrapers/movie/imdb/ImdbMovie.h"
 #include "scrapers/movie/tmdb/TmdbMovie.h"
+#include "scrapers/tmdb/TmdbApi.h"
 #include "settings/Settings.h"
 #include "ui/movies/MoviePreviewAdapter.h"
 #include "utils/Meta.h"
@@ -347,7 +348,7 @@ void MovieSearchWidget::onResultDoubleClicked(QTableWidgetItem* item)
         // If the next scraper is IMDB and the title scraper was TMDb, resolve
         // the IMDB ID via TMDb API so that the IMDB search can use it directly.
         // This avoids forcing users to re-search with the English title.
-        if (nextScraperId == mediaelch::scraper::ImdbMovie::ID && custom.titleScraper() != nullptr
+if (nextScraperId == mediaelch::scraper::ImdbMovie::ID && custom.titleScraper() != nullptr
             && custom.titleScraper()->meta().identifier == mediaelch::scraper::TmdbMovie::ID
             && !m_imdbId.isValid()) {
             resolveImdbIdFromTmdb(currentIdentifier.str(), [this]() {

@@ -25,6 +25,9 @@ tmp/
 # IDEs / Debuggers
 .vscode
 .idea
+.claude/
+CLAUDE.md
+HANDOFF.md
 cmake-build-debug
 *.autosave
 .gdb/

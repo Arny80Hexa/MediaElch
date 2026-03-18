@@ -94,11 +94,26 @@ MovieScrapeJob* CustomMovieScraper::loadMovie(MovieScrapeJob::Config config)
         if (!scraperMap.contains(detailScraper)) {
             MovieScrapeJob::Config scraperConfig;
             scraperConfig.identifier = m_scraperMovieIds[detailScraper];
-            scraperConfig.locale = detailScraper->meta().defaultLocale;
+            // Use the user-configured language for each sub-scraper, not the
+            // hardcoded default locale.  Fall back to the default if no
+            // configuration is found (e.g. for image-only scrapers).
+            mediaelch::ScraperConfiguration* scraperSettings =
+                Manager::instance()->scrapers().movieScraperConfig(detailScraper->meta().identifier);
+            scraperConfig.locale = (scraperSettings != nullptr) ? scraperSettings->language()
+                                                                : detailScraper->meta().defaultLocale;
             scraperConfig.details = {};
             scraperMap.insert(detailScraper, scraperConfig);
         }
         scraperMap[detailScraper].details << detail;
+    }
+
+    // Always collect ratings from every sub-scraper that supports them.
+    // The merge logic in MovieMerger uses the rating source as key, so
+    // IMDb and TMDb ratings coexist without overwriting each other.
+    for (auto it = scraperMap.begin(); it != scraperMap.end(); ++it) {
+        if (it.key()->meta().supportedDetails.contains(MovieScraperInfo::Rating)) {
+            it.value().details.insert(MovieScraperInfo::Rating);
+        }
     }
 
     CustomMovieScrapeJob::CustomScraperConfig scraperConfig;
