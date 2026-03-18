@@ -53,7 +53,19 @@ void ImdbTvShowSearchJob::searchViaQuery()
 {
     MediaElch_Debug_Ensures(!ImdbId::isValidFormat(config().query));
 
-    m_api.searchForShow(config().locale, config().query, [this](QString html, ScraperError error) {
+    // Split "Title 2008" or "Title (2008)" into title and year so that
+    // IMDb's release_date filter can be used for more precise results.
+    QString query = config().query;
+    int year = 0;
+    static const QRegularExpression yearRx(
+        R"(^(.+?)[\s(]+(\d{4})\)?$)", QRegularExpression::InvertedGreedinessOption);
+    QRegularExpressionMatch match = yearRx.match(query);
+    if (match.hasMatch()) {
+        query = match.captured(1).trimmed();
+        year = match.captured(2).toInt();
+    }
+
+    m_api.searchForShow(config().locale, query, year, [this](QString html, ScraperError error) {
         if (error.hasError()) {
             // pass; already set
         } else if (html.isEmpty()) {

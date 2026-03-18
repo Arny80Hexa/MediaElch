@@ -1677,6 +1677,11 @@
         <source>No Scraper Available</source>
         <translation>Kein Scraper verfügbar</translation>
     </message>
+    <message>
+        <location filename="../../src/ui/settings/CustomTvScraperSettingsWidget.ui"/>
+        <source>Note: IMDb loads each episode individually which can be very slow for full-season scraping. TMDb and TheTvDb are recommended for episode details as they can load entire seasons at once.</source>
+        <translation>Hinweis: IMDb lädt jede Episode einzeln, was bei ganzen Staffeln sehr langsam sein kann. Für Episodendetails werden TMDb und TheTvDb empfohlen, da diese ganze Staffeln auf einmal laden können.</translation>
+    </message>
 </context>
 <context>
     <name>DownloadsWidget</name>

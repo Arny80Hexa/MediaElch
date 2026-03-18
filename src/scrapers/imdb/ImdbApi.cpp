@@ -66,9 +66,9 @@ void ImdbApi::sendGetRequest(const Locale& locale, const QUrl& url, ImdbApi::Api
     });
 }
 
-void ImdbApi::searchForShow(const Locale& locale, const QString& query, ImdbApi::ApiCallback callback)
+void ImdbApi::searchForShow(const Locale& locale, const QString& query, int year, ImdbApi::ApiCallback callback)
 {
-    sendGetRequest(locale, makeShowSearchUrl(query), std::move(callback));
+    sendGetRequest(locale, makeShowSearchUrl(query, year), std::move(callback));
 }
 
 void ImdbApi::searchForMovie(const Locale& locale,
@@ -153,7 +153,7 @@ QUrl ImdbApi::makeFullAssetUrl(const QString& suffix)
     return {"https://www.imdb.com" + suffix};
 }
 
-QUrl ImdbApi::makeShowSearchUrl(const QString& searchStr) const
+QUrl ImdbApi::makeShowSearchUrl(const QString& searchStr, int year) const
 {
     if (ImdbId::isValidFormat(searchStr)) {
         return makeFullUrl(QStringLiteral("/title/") + searchStr + '/');
@@ -165,6 +165,10 @@ QUrl ImdbApi::makeShowSearchUrl(const QString& searchStr) const
     QUrlQuery queries;
     queries.addQueryItem("title", searchStr);
     queries.addQueryItem("title_type", "tv_series,tv_miniseries");
+    if (year > 0) {
+        const QString yearStr = QString::number(year);
+        queries.addQueryItem("release_date", yearStr + "," + yearStr);
+    }
     queries.addQueryItem("view", "simple");
     queries.addQueryItem("count", "100");
     return makeFullUrl("/search/title/?" + queries.toString());

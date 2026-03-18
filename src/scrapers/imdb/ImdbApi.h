@@ -50,7 +50,7 @@ public:
 
     void searchForMovie(
         const Locale& locale, const QString& query, int year, bool includeAdult, ApiCallback callback);
-    void searchForShow(const Locale& locale, const QString& query, ApiCallback callback);
+    void searchForShow(const Locale& locale, const QString& query, int year, ApiCallback callback);
 
     void loadTitle(const Locale& locale, const ImdbId& movieId, PageKind page, ApiCallback callback);
 
@@ -71,7 +71,7 @@ private:
 
     ELCH_NODISCARD QUrl makeTitleUrl(const ImdbId& id, PageKind page) const;
     ELCH_NODISCARD QUrl makeMovieSearchUrl(const QString& searchStr, int year, bool includeAdult) const;
-    ELCH_NODISCARD QUrl makeShowSearchUrl(const QString& searchStr) const;
+    ELCH_NODISCARD QUrl makeShowSearchUrl(const QString& searchStr, int year) const;
     ELCH_NODISCARD QUrl makeSeasonUrl(const ImdbId& showId, SeasonNumber season) const;
     ELCH_NODISCARD QUrl makeDefaultEpisodesUrl(const ImdbId& showId) const;
 

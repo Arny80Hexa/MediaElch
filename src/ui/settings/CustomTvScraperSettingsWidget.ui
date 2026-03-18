@@ -108,6 +108,19 @@
          </column>
         </widget>
        </item>
+       <item>
+        <widget class="QLabel" name="lblEpisodeScraperHint">
+         <property name="text">
+          <string>Note: IMDb loads each episode individually which can be very slow for full-season scraping. TMDb and TheTvDb are recommended for episode details as they can load entire seasons at once.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string>color: #e0a020; font-style: italic;</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>

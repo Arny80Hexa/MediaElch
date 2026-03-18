@@ -18,9 +18,9 @@ QPair<QString, QString> ConcertSearchJob::extractTitleAndYear(const QString& que
         rxYear.setPatternOptions(QRegularExpression::InvertedGreedinessOption);
         auto match = rxYear.match(query);
         if (match.hasMatch()) {
-            QString searchTitle = match.captured(0);
-            QString searchYear = match.captured(1);
-            return {searchTitle, searchTitle};
+            QString searchTitle = match.captured(1);
+            QString searchYear = match.captured(2);
+            return {searchTitle, searchYear};
         }
     }
     return {};
